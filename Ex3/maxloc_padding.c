@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
 
     tvals maxinfo[MAX_THREADS];
     for (int i = 0; i < MAX_THREADS; i++) { maxinfo[i].val = -1.0e30; maxinfo[i].loc = -1; }
-    double maxval_final = -1.0e30;
-    int maxloc_final = -1;
+    double mval = -1.0e30;
+    int mloc = -1;
 
     double start_time = omp_get_wtime();
 
@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
     }
 
     for (int i = 0; i < MAX_THREADS; i++) {
-            if (maxinfo[i].val > maxval_final) {
-                 maxval_final = maxinfo[i].val; maxloc_final = maxinfo[i].loc;
+            if (maxinfo[i].val > mval) {
+                 mval = maxinfo[i].val; mloc = maxinfo[i].loc;
             }
     }
     double end_time = omp_get_wtime();
 
-    printf("maxloc: %d ; maxval: %f\n", maxloc_final, maxval_final);
+    printf("maxloc: %d ; maxval: %f\n", mloc, mval);
     printf("Elapsed: %f\n", end_time - start_time);
 
     return 0;

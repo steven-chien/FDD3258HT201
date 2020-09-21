@@ -10,17 +10,13 @@ int main(int argc, char *argv[])
 {
     double x[N];
 
-    //srand(time(0));
     srand(0);
     for (int i =0; i < N; i++) {
         x[i] = ((double)(rand()) / RAND_MAX)*((double)(rand()) / RAND_MAX)*((double)(rand()) / RAND_MAX)*1000;
     }
 
-    int maxloc[MAX_THREADS] = { 0 }, mloc;
-    double maxval[MAX_THREADS] = { -1.0e30 }, mval;
-
-    double maxval_final = -1.0e30;
-    int maxloc_final = -1;
+    int maxloc[MAX_THREADS] = { -1 }, mloc = -1;
+    double maxval[MAX_THREADS] = { -1.0e30 }, mval = -10e30;
 
     double start_time = omp_get_wtime();
 
@@ -38,13 +34,13 @@ int main(int argc, char *argv[])
     }
 
     for (int i = 0; i < MAX_THREADS; i++) {
-            if (maxval[i] > maxval_final) {
-                 maxval_final = maxval[i]; maxloc_final = maxloc[i];
+            if (maxval[i] > mval) {
+                 mval = maxval[i]; mloc = maxloc[i];
             }
     }
     double end_time = omp_get_wtime();
 
-    printf("maxloc: %d ; maxval: %f\n", maxloc_final, maxval_final);
+    printf("maxloc: %d ; maxval: %f\n", mloc, mval);
     printf("Elapsed: %f\n", end_time - start_time);
 
     return 0;

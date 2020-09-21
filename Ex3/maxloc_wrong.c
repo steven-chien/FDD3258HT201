@@ -7,8 +7,10 @@
 
 int main(int argc, char *argv[])
 {
+    printf("Threads: %d\n", omp_get_max_threads());
     double x[N];
 
+    //srand(time(0));
     srand(0);
     for (int i =0; i < N; i++) {
         x[i] = ((double)(rand()) / RAND_MAX)*((double)(rand()) / RAND_MAX)*((double)(rand()) / RAND_MAX)*1000;
@@ -19,11 +21,8 @@ int main(int argc, char *argv[])
     double start_time = omp_get_wtime();
 #pragma omp parallel for
     for (int i=0; i < N; i++){
-#pragma omp critical
-        {
-            if (x[i] > maxval) {
-                 maxval = x[i]; maxloc = i;
-            }
+        if (x[i] > maxval) {
+             maxval = x[i]; maxloc = i;
         }
     }
     double end_time = omp_get_wtime();
