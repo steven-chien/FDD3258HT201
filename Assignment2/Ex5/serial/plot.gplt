@@ -1,0 +1,11 @@
+plot 'particle_0.txt' u 2:3 t 'p 1', \
+'particle_1.txt' u 2:3 t 'p 1', \
+'particle_2.txt' u 2:3 t 'p 2', \
+'particle_3.txt' u 2:3 t 'p 3', \
+'particle_4.txt' u 2:3 t 'p 4', \
+'particle_5.txt' u 2:3 t 'p 5', \
+'particle_6.txt' u 2:3 t 'p 6', \
+'particle_7.txt' u 2:3 t 'p 7', \
+'particle_8.txt' u 2:3 t 'p 8', \
+'particle_9.txt' u 2:3 t 'p 9', \
+'particle_10.txt' u 2:3 t 'p 10';
