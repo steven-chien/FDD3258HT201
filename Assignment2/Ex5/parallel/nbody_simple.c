@@ -48,7 +48,7 @@ srand(0);
     for (int step = 1; step <= TOTAL_STEPS; step++) {
         /* compute vel */
         memset(forces, 0, NUM_PARTICLES * DIM * sizeof(double));
-#pragma omp parallel for
+#pragma omp parallel for schedule(static, 30)
         for (int q = 0; q < NUM_PARTICLES; q++) {
             for (int k = 0; k < NUM_PARTICLES; k++) {
                 if (k != q) {
@@ -65,7 +65,7 @@ srand(0);
         }
     
         /* particle mover */
-//#pragma omp parallel for
+#pragma omp parallel for schedule(static, 30)
         for (int q = 0; q < NUM_PARTICLES; q++) {
             pos[q][X] += delta_t * vel[q][X];
             pos[q][Y] += delta_t * vel[q][Y];
@@ -76,7 +76,6 @@ srand(0);
             //printf("%d\t%f\t%f\t%f\n", q, pos[q][X], pos[q][Y], pos[q][Z]);
         }
     }
-    printf("%d\t%f\t%f\t%f\n", 1, pos[0][0], pos[1][0], pos[2][0]);
     double end_time  = omp_get_wtime(); 
     printf("time: %f\n", end_time - start_time);
 

@@ -17,6 +17,7 @@ double G = 6.673 * 10e-11;
 
 int main(int argc, char *argv[])
 {
+printf("threads: %d\n", omp_get_max_threads());
     double       pos[NUM_PARTICLES][DIM];
     double   old_pos[NUM_PARTICLES][DIM];
     double       vel[NUM_PARTICLES][DIM];
@@ -46,7 +47,7 @@ int main(int argc, char *argv[])
     for (int step = 1; step <= TOTAL_STEPS; step++) {
         /* compute vel */
         memset(forces, 0, NUM_PARTICLES * DIM * sizeof(double));
-#pragma omp parallel for
+#pragma omp parallel for schedule(static, 15)
         for (int q = 0; q < NUM_PARTICLES; q++) {
             for (int k = q + 1; k < NUM_PARTICLES; k++) {
                     double force_qk[DIM] = { 0.0 };
@@ -73,7 +74,7 @@ int main(int argc, char *argv[])
         }
     
         /* particle mover */
-//#pragma omp parallel for
+#pragma omp parallel for schedule(static, 15)
         for (int q = 0; q < NUM_PARTICLES; q++) {
             pos[q][X] += delta_t * vel[q][X];
             pos[q][Y] += delta_t * vel[q][Y];
@@ -81,7 +82,6 @@ int main(int argc, char *argv[])
             vel[q][X] += delta_t / masses[q] * forces[q][X];
             vel[q][Y] += delta_t / masses[q] * forces[q][Y];
             vel[q][Z] += delta_t / masses[q] * forces[q][Z];
-            printf("%d\t%f\t%f\t%f\n", q, pos[q][X], pos[q][Y], pos[q][Z]);
         }
     }
     printf("%d\t%f\t%f\t%f\n", 1, pos[0][0], pos[1][0], pos[2][0]);
